@@ -26,46 +26,40 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ok=findViewById(R.id.ok);
-        username=findViewById(R.id.username);
-        password=findViewById(R.id.password);
+        ok = findViewById(R.id.ok);
+        username = findViewById(R.id.username);
+        password = findViewById(R.id.password);
 
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name= String.valueOf(username.getText());
-                String pass= String.valueOf(password.getText());
-                String url = "http://157.0.24.54:5000/register";//替换成自己的服务器地址
-                SendMessage(url,name,pass);
+                String name = String.valueOf(username.getText());
+                String pass = String.valueOf(password.getText());
+                String url = "http://192.168.43.215:5000/register";//替换成自己的服务器地址
+                SendMessage(url, name, pass);
             }
         });
     }
 
 
-
-    private void SendMessage(String url,final String userName,String passWord)
-    {
+    private void SendMessage(String url, final String userName, String passWord) {
         OkHttpClient client = new OkHttpClient();
         FormBody.Builder formBuilder = new FormBody.Builder();
         formBuilder.add("username", userName);
         formBuilder.add("password", passWord);
         Request request = new Request.Builder().url(url).post(formBuilder.build()).build();
         Call call = client.newCall(request);
-        call.enqueue(new Callback()
-        {
+        call.enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e)
-            {
-                runOnUiThread(new Runnable()
-                {
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this,"服务器错误",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -73,29 +67,23 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResponse(Call call, final Response response) throws IOException
-            {
+            public void onResponse(Call call, final Response response) throws IOException {
                 final String res = response.body().string();
-                runOnUiThread(new Runnable()
-                {
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
-                        if (res.equals("0"))
-                        {
+                    public void run() {
+                        if (res.equals("0")) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(MainActivity.this,"该用户名已被注册",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "该用户名已被注册", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                        }
-                        else
-                        {
+                        } else {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(MainActivity.this,"成功",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "成功", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
